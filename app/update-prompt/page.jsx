@@ -1,15 +1,15 @@
 'use client'
 
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
+import { headers } from "next/headers"
 
 import Form  from "@components/Form"
 
 const EditPrompt = () => {
 
   const router = useRouter()
-  const { data: session } = useSession()
   const [submitting, setSubmitting] = useState(false)
   const [post, setPost] = useState({
     prompt: '',
@@ -17,6 +17,7 @@ const EditPrompt = () => {
   })
   const searchParams = useSearchParams()
   const promptId = searchParams.get('id')
+
 
   useEffect(() => {
     const getPromptDetails = async() => {
@@ -60,7 +61,7 @@ const EditPrompt = () => {
   }
 
   return (
-    <Form 
+      <Form 
       type="Edit"
       post={post}
       setPost={setPost}
@@ -70,4 +71,10 @@ const EditPrompt = () => {
   )
 }
 
-export default EditPrompt;
+export default function EditPromptPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <EditPrompt />
+    </Suspense>
+  );
+}
