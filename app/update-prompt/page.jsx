@@ -2,7 +2,8 @@
 
 import { Suspense, useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/router"
+import { useSearchParams } from "next/navigation"
 
 import Form  from "@components/Form"
 
