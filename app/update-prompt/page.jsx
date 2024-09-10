@@ -1,21 +1,22 @@
 'use client'
 
 import { Suspense, useEffect, useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+
 
 import Form  from "@components/Form"
 
 const EditPrompt = () => {
 
-  const router = useRouter()
+  // const router = useRouter()
   const [submitting, setSubmitting] = useState(false)
   const [post, setPost] = useState({
     prompt: '',
     tag: '',
   })
-  const searchParams = useSearchParams()
-  const promptId = searchParams.get('id')
+  // const searchParams = useSearchParams()
+  // const promptId = searchParams.get('id')
 
+  const [promptId, setPromptId] = useState(null);
 
   useEffect(() => {
     const getPromptDetails = async() => {
@@ -30,6 +31,28 @@ const EditPrompt = () => {
 
     if(promptId) getPromptDetails()
   }, [promptId])
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search); // Get search params from the URL
+    const id = params.get('id'); // Extract 'id' parameter
+    const getPromptDetails = async() => {
+          const response = await fetch(`/api/prompt/${promptId}`)
+          const data = await response.json()
+          console.log(data)
+          setPost({
+            prompt: data.prompt,
+            tag: data.tag
+          })
+        }
+    setPromptId(id);
+  }, []); // Empty dependency array to run only once on mount
+
+  if (!promptId) {
+    return <div>Loading...</div>;
+  }
+
+
+
 
   const updatePrompt = async(e) => {
     e.preventDefault();
