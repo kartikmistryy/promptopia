@@ -19,6 +19,8 @@ const PromptCardList = ({ data, handleTagClick }) => {
 
 const Feed = () => {
 
+  console.log(process.env.NEXTAUTH_SECRET)
+
   const [searchText, setSearchText] = useState('')
   const [posts, setPosts] = useState([])
 
