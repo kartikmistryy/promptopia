@@ -27,7 +27,6 @@ const Feed = () => {
     if(e.target.value){
       setSearchText(e.target.value)
       const filteredPosts = posts.filter((post) => {
-        console.log(e.target.value)
         return post.creator.username.toLowerCase().includes(e.target.value) ||
         post.tag.toLowerCase().includes(e.target.value) ||
         post.prompt.toLowerCase().includes(e.target.value)
@@ -51,7 +50,7 @@ const Feed = () => {
   }, [])
 
   return (
-    <div className="feed">
+    <div className="feed py-10">
       <form className="relative w-full flex-center">
         <input 
         type="text"

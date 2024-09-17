@@ -22,7 +22,6 @@ const EditPrompt = () => {
     const getPromptDetails = async() => {
       const response = await fetch(`/api/prompt/${promptId}`)
       const data = await response.json()
-      console.log(data)
       setPost({
         prompt: data.prompt,
         tag: data.tag
@@ -38,7 +37,6 @@ const EditPrompt = () => {
     const getPromptDetails = async() => {
           const response = await fetch(`/api/prompt/${promptId}`)
           const data = await response.json()
-          console.log(data)
           setPost({
             prompt: data.prompt,
             tag: data.tag
@@ -70,7 +68,7 @@ const EditPrompt = () => {
       })
 
       if(response.ok){
-        router.push('/')
+        window.location.href = "/"
       }
     }
     catch(err) {

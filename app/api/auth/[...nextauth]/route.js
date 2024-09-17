@@ -3,7 +3,6 @@ import Google from "next-auth/providers/google";
 import { connectToDB } from "@utils/database";
 import User from "@models/user";
 
-console.log("NEXT SECRET", process.env.NEXTAUTH_SECRET)
 
 
 const handler = NextAuth({

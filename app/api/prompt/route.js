@@ -10,8 +10,8 @@ export const GET = async(request) => {
     }
     catch (err) {
         return new Response(
-            JSON.stringify({ error: err.message }), // Return error message as JSON
-            { status: 500 } // Use 500 for internal server error
+            JSON.stringify({ error: err.message }), 
+            { status: 500 }
         );
     }
 }
