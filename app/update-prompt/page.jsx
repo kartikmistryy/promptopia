@@ -41,7 +41,9 @@ const EditPrompt = () => {
             prompt: data.prompt,
             tag: data.tag
           })
-        }
+    }
+    if(id) getPromptDetails()
+    
     setPromptId(id);
   }, []); // Empty dependency array to run only once on mount
 

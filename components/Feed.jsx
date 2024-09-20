@@ -16,7 +16,6 @@ const PromptCardList = ({ data, handleTagClick }) => {
   )
 }
 
-
 const Feed = () => {
 
 
