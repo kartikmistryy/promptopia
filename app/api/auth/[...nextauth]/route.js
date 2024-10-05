@@ -18,9 +18,9 @@ const handler = NextAuth({
           name: `next-auth.session-token`,
           options: {
             httpOnly: true,
-            sameSite: 'lax',  // or 'strict'
+            sameSite: 'lax',
             path: '/',
-            secure: process.env.NODE_ENV === 'production',  // Only secure in production
+            secure: process.env.NODE_ENV === 'production',  
           },
         },
       },
