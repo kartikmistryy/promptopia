@@ -76,7 +76,11 @@ const Feed = () => {
       </form>
 
       {/* <PromptCardList data={posts} handleTagClick={() => {}} /> */}
-
+      <button onClick={async() => {
+        const response = await fetch("/api/prompt");
+        const data = await response.json();
+        console.log(data)
+      }}>Get Posts</button>
       <div className="mt-4 prompt_layout">
         {posts.map((post) => (
           <PromptCard
