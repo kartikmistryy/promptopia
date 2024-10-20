@@ -42,26 +42,21 @@ const Feed = () => {
   };
 
   const fetchPosts = async () => {
-    const response = await fetch("/api/prompt", { cache: "no-store"});
+    const response = await fetch('/api/prompt', { cache: 'no-store' });
     const data = await response.json();
     setPosts(data);
-    console.log(data)
   };
 
   useEffect(() => {
-    // Check if refresh query exists in the URL
-    if (searchParams.get("refresh")) {
-      fetchPosts(); // Refetch posts
-    } else {
-      fetchPosts();
+    // Check if a refresh is needed from the query params
+    if (searchParams.get('refresh') === 'true') {
+      fetchPosts(); // Re-fetch the posts if prompted by URL
     }
-
-    console.log("Posts fetched");
-  }, [searchParams]);  // Refetch posts when searchParams change
+  }, [searchParams]);
 
   useEffect(() => {
-    fetchPosts()
-  }, [])
+    fetchPosts();
+  }, []);
 
   return (
     <div className="feed py-10">

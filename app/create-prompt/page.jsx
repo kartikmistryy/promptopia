@@ -36,7 +36,7 @@ const CreatePrompt = () => {
 
       if (response.ok) {
         // Add the refresh parameter to the URL to trigger Feed refetch
-        router.replace('/?refresh=true');
+        router.replace({ pathname: '/', query: { refresh: true } });
       } else {
         console.error('Failed to create prompt');
       }
