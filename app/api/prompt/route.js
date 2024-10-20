@@ -4,9 +4,11 @@ import Prompt from "@models/prompt";
 export const GET = async (request) => {
   try {
     await connectToDB();
-    const prompts = await Prompt.find({}).populate('creator');
 
-    // Ensure caching is disabled
+    const prompts = await Prompt.find({}).populate('creator');
+    
+    console.log("Fetched prompts:", prompts);  // Log the fetched data in Vercel logs
+    
     return new Response(JSON.stringify(prompts), {
       status: 200,
       headers: {
@@ -17,14 +19,13 @@ export const GET = async (request) => {
       },
     });
   } catch (err) {
-    return new Response(
-      JSON.stringify({ error: err.message }), 
-      { 
-        status: 500,
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      }
-    );
+    console.log("Error fetching prompts:", err.message);  // Log any errors
+    
+    return new Response(JSON.stringify({ error: err.message }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   }
 };
