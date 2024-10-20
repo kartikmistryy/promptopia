@@ -11,14 +11,16 @@ const CreatePrompt = () => {
 
   const [post, setPost] = useState({ prompt: '', tag: '' });
   const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   // Function to handle creating a new prompt
   const createPrompt = async (e) => {
     e.preventDefault();
     setSubmitting(true);
+    setErrorMessage(''); // Reset error message
 
     if (!session?.user) {
-      console.log('User not authenticated');
+      setErrorMessage('User not authenticated');
       setSubmitting(false);
       return;
     }
@@ -35,12 +37,16 @@ const CreatePrompt = () => {
       });
 
       if (response.ok) {
-        // Add the refresh parameter to the URL to trigger Feed refetch
-        router.replace({ pathname: '/', query: { refresh: true } });
+        const createdPrompt = await response.json();
+        console.log('Created new prompt:', createdPrompt); // Log the created prompt
+        router.replace({ pathname: '/', query: { refresh: true } }); // Trigger re-fetch
       } else {
-        console.error('Failed to create prompt');
+        const errorData = await response.json();
+        setErrorMessage(`Failed to create prompt: ${errorData.error || 'Unknown error'}`);
+        console.error('Failed to create prompt:', errorData);
       }
     } catch (error) {
+      setErrorMessage(`Error creating prompt: ${error.message}`);
       console.error('Error creating prompt:', error);
     } finally {
       setSubmitting(false);
@@ -48,13 +54,16 @@ const CreatePrompt = () => {
   };
 
   return (
-    <Form
-      type="Create"
-      post={post}
-      setPost={setPost}
-      submitting={submitting}
-      handleSubmit={createPrompt}
-    />
+    <div>
+      <Form
+        type="Create"
+        post={post}
+        setPost={setPost}
+        submitting={submitting}
+        handleSubmit={createPrompt}
+      />
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>} {/* Display error message */}
+    </div>
   );
 };
 
