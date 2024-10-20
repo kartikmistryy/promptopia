@@ -71,7 +71,17 @@ const Feed = () => {
         />
       </form>
 
-      <PromptCardList data={posts} handleTagClick={() => {}} />
+      {/* <PromptCardList data={posts} handleTagClick={() => {}} /> */}
+
+      <div className="mt-4 prompt_layout">
+        {posts.map((post) => (
+          <PromptCard
+            key={post._id}
+            post={post}
+            handleTagClick={() => {}}
+          />
+        ))}
+      </div>
     </div>
   );
 };
