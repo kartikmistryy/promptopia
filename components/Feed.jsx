@@ -1,14 +1,13 @@
-"use client";
+"use client"
 
 import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";  // Import useSearchParams
 import PromptCard from "./PromptCard";
 
 const PromptCardList = ({ data, handleTagClick }) => {
   return (
     <div className="mt-4 prompt_layout">
       {data.map((post) => (
-        <PromptCard
+        <PromptCard 
           key={post._id}
           post={post}
           handleTagClick={handleTagClick}
@@ -19,72 +18,60 @@ const PromptCardList = ({ data, handleTagClick }) => {
 };
 
 const Feed = () => {
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState('');
   const [posts, setPosts] = useState([]);
-  
-  const searchParams = useSearchParams();  // Use useSearchParams instead of useRouter
-
-  const handleSearchChange = (e) => {
-    if (e.target.value) {
-      setSearchText(e.target.value);
-      const filteredPosts = posts.filter((post) => {
-        return (
-          post.creator.username.toLowerCase().includes(e.target.value) ||
-          post.tag.toLowerCase().includes(e.target.value) ||
-          post.prompt.toLowerCase().includes(e.target.value)
-        );
-      });
-      setPosts(filteredPosts);
-    } else {
-      setSearchText("");
-      fetchPosts();
-    }
-  };
 
   const fetchPosts = async () => {
-    const response = await fetch('/api/prompt', { cache: 'no-store' });
-    const data = await response.json();
-    setPosts(data);
-  };
-
-  useEffect(() => {
-    // Check if a refresh is needed from the query params
-    if (searchParams.get('refresh') === 'true') {
-      fetchPosts(); // Re-fetch the posts if prompted by URL
+    try {
+      const response = await fetch('/api/prompt', { cache: 'no-store' });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      console.log('Fetched posts:', data); // Log the fetched posts
+      setPosts(data);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
     }
-  }, [searchParams]);
+  };
 
   useEffect(() => {
     fetchPosts();
   }, []);
 
+  const handleSearchChange = (e) => {
+    const value = e.target.value.toLowerCase();
+    setSearchText(value);
+    
+    // Filter posts based on search input
+    const filteredPosts = posts.filter((post) => {
+      return (
+        (typeof post.creator?.username === 'string' && post.creator.username.toLowerCase().includes(value)) ||
+        (typeof post.tag === 'string' && post.tag.toLowerCase().includes(value)) ||
+        (typeof post.prompt === 'string' && post.prompt.toLowerCase().includes(value))
+      );
+    });
+
+    // Update the displayed posts with filtered results
+    setPosts(filteredPosts);
+  };
+
   return (
     <div className="feed py-10">
       <form className="relative w-full flex-center">
-        <input
+        <input 
           type="text"
-          placeholder="Search for tags or username"
+          placeholder="Search for tags or username" 
           onChange={handleSearchChange}
           value={searchText}
           className="search_input peer"
         />
       </form>
 
-      {/* <PromptCardList data={posts} handleTagClick={() => {}} /> */}
-      <button onClick={async() => {
-        const response = await fetch("/api/prompt");
-        const data = await response.json();
-        console.log(data)
-      }}>Get Posts</button>
-      <div className="mt-4 prompt_layout">
-        {posts.map((post) => (
-          <PromptCard
-            key={post._id}
-            post={post}
-            handleTagClick={() => {}}
-          />
-        ))}
-      </div>
+      <PromptCardList
+        data={posts}
+        handleTagClick={() => {}}
+      />
     </div>
   );
 };

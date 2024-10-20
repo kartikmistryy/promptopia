@@ -39,7 +39,7 @@ const CreatePrompt = () => {
       if (response.ok) {
         const createdPrompt = await response.json();
         console.log('Created new prompt:', createdPrompt); // Log the created prompt
-        router.replace({ pathname: '/', query: { refresh: true } }); // Trigger re-fetch
+        router.push('/'); // Trigger re-fetch
       } else {
         const errorData = await response.json();
         setErrorMessage(`Failed to create prompt: ${errorData.error || 'Unknown error'}`);
