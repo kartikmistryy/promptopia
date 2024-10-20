@@ -59,6 +59,10 @@ const Feed = () => {
     console.log("Posts fetched");
   }, [searchParams]);  // Refetch posts when searchParams change
 
+  useEffect(() => {
+    fetchPosts()
+  }, [])
+
   return (
     <div className="feed py-10">
       <form className="relative w-full flex-center">
