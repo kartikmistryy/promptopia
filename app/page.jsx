@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import Feed from "@components/Feed"
 
 const Home = () => {
@@ -9,7 +10,9 @@ const Home = () => {
         <p className="text-center desc">Prompotpia is an open-source AI prompting tool for modern world to discover, create and share creative prompts</p>
 
 
-        <Feed/>
+        <Suspense fallback={<div>Loading...</div>}>
+        <Feed />
+      </Suspense>
     </section>
   )
 }
