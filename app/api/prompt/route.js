@@ -5,7 +5,7 @@ export const GET = async (request) => {
   try {
     await connectToDB();
     
-    const prompts = await Prompt.find({}).populate('creator');
+    const prompts = await Prompt.find({}).populate('creator').lean();
     
     // Add Cache-Control headers to disable caching
     return new Response(
