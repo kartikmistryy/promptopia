@@ -1,4 +1,4 @@
-'use client';
+"use client"
 
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
@@ -35,7 +35,8 @@ const CreatePrompt = () => {
       });
 
       if (response.ok) {
-        router.replace('/');  // Use replace to force homepage refresh after prompt creation
+        // Add the refresh parameter to the URL to trigger Feed refetch
+        router.replace('/?refresh=true');
       } else {
         console.error('Failed to create prompt');
       }
