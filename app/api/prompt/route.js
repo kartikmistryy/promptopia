@@ -1,29 +1,25 @@
 import { connectToDB } from "@utils/database";
 import Prompt from "@models/prompt";
+import User from "@models/user";
 
 export const GET = async (request) => {
   try {
     await connectToDB();
+
+    const testPrompts = await Prompt.find({}).populate("creator").lean();
     
-    const prompts = await Prompt.find({}).populate('creator').lean();
-    
-    // Add Cache-Control headers to disable caching
-    return new Response(
-      JSON.stringify(prompts), 
-      {
-        status: 200,
-        headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0',
-          'Surrogate-Control': 'no-store',
-        },
-      }
-    );
+    return new Response(JSON.stringify(testPrompts), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   } catch (err) {
-    return new Response(
-      JSON.stringify({ error: err.message }), 
-      { status: 500 }
-    );
+    return new Response(JSON.stringify({ error: err.message }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   }
 };
