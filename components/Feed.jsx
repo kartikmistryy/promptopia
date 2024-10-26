@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from "react";
 import PromptCard from "./PromptCard";
@@ -10,7 +10,7 @@ const PromptCardList = ({ data, handleTagClick }) => {
         <PromptCard
           key={post._id}
           post={post}
-          handleTagClick={handleTagClick} // Pass handleTagClick directly
+          handleTagClick={handleTagClick}
         />
       ))}
     </div>
@@ -38,13 +38,15 @@ const Feed = () => {
   };
 
   const handleTagClickListener = (tag) => {
-    setSearchText(tag); // Optionally update search text
+    setSearchText(tag);
     const filteredPosts = posts.filter((post) => post.tag === tag);
     setPosts(filteredPosts);
   };
 
   const fetchPosts = async () => {
-    const response = await fetch('/api/prompt');
+    const response = await fetch(`/api/prompt?timestamp=${new Date().getTime()}`, {
+      cache: 'no-store' // Disable caching for this request
+    });
     const data = await response.json();
     setPosts(data);
   };
@@ -67,7 +69,7 @@ const Feed = () => {
 
       <PromptCardList
         data={posts}
-        handleTagClick={handleTagClickListener} // Pass handleTagClickListener directly
+        handleTagClick={handleTagClickListener}
       />
     </div>
   );
