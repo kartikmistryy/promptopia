@@ -1,20 +1,20 @@
 import { connectToDB } from "@utils/database";
 import Prompt from "@models/prompt";
 
-// GET all Prompts
 export const GET = async (request) => {
     try {
         await connectToDB();
+        console.log(process.env.NEXTAUTH_URL)
         const prompts = await Prompt.find({}).populate('creator');
-        
         return new Response(
             JSON.stringify(prompts),
             {
                 status: 200,
                 headers: {
                     'Content-Type': 'application/json',
-                    'Cache-Control': 'no-store' // Disable caching
-                }
+                    'Cache-Control': 'no-store, max-age=0',
+                    'Pragma': 'no-cache'
+                  }
             }
         );
     } catch (err) {

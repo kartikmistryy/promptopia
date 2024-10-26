@@ -44,12 +44,27 @@ const Feed = () => {
   };
 
   const fetchPosts = async () => {
-    const response = await fetch(`/api/prompt?timestamp=${new Date().getTime()}`, {
-      cache: 'no-store' // Disable caching for this request
-    });
-    const data = await response.json();
-    setPosts(data);
+    try {
+      const response = await fetch(`/api/prompt`, {
+        cache: 'no-store'
+      });
+      
+      if (!response.ok) throw new Error("Failed to fetch posts");
+      
+      const data = await response.json();
+      console.log("Fetched data:", data);  // Log the data to inspect its structure
+  
+      if (Array.isArray(data)) {
+        setPosts(data);  // Set posts only if data is an array
+      } else {
+        console.error("Unexpected data format:", data);
+        setPosts([]);  // Fallback to an empty array if data is not an array
+      }
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    }
   };
+  
 
   useEffect(() => {
     fetchPosts();
@@ -74,5 +89,7 @@ const Feed = () => {
     </div>
   );
 };
+
+
 
 export default Feed;
